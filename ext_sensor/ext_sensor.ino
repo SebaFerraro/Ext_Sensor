@@ -216,7 +216,7 @@ void coreTask( void * pvParameters ){
       Serial.print("No conectado wifi:");
       Serial.println(Wconectado);
     }
-   delay(1000);
+   delay(800);
    }
 }
 
