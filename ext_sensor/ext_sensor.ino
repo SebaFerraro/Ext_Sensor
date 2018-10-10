@@ -11,7 +11,7 @@
 #define RLY_P1 26
 #define RLY_P2 27
 #define ANALOG_PIN_0 35
-#define TOKEN_TB "f1KmDbI5m7y5xmTqAEol"
+#define TOKEN_TB "UOCSwBUNS3F2zjYzj1SL"
 
 DHT dht(DHT_DATA, DHTTYPE);
 static int taskCore = 0;
@@ -21,8 +21,8 @@ char bufferT[28]="";
 int analog_value = 0;
 boolean Auto[2] = {false,false};
 float Lin[2] = {0,0};
-const char* ssid     = "wifi";
-const char* password = "secret1703secret1703";
+const char* ssid     = "SSID";
+const char* password = "PASS";
 static int Wconectado = 0;
 boolean gpioState[36] = {false,false};
 const char* mqtt_server = "190.2.22.61";
@@ -101,31 +101,15 @@ void set_gpio_status(int pin, boolean enabled) {
 }
 
 String get_Auto_status(int pin, String methodName) {
-  //StaticJsonBuffer<200> jsonBuffer;
-  //JsonObject& data = jsonBuffer.createObject();
-  String data =String(Auto[pin] ? true : false);
-  String payload = "{\"";
-      //payload += "\"method\":";
-      payload += methodName;
-      payload += "\":";
-      //payload += "\"params\":";
-      payload += "true";
-      payload += "}";
-
-      // Send payload
+  String payload = String((Auto[pin] ? true : false));
+  Serial.print("Estado: ");
   char attributes[200];
   payload.toCharArray( attributes,200);
-  
-  
-  //char payload[256];
-  //data.printTo(payload, sizeof(payload));
-  //String strPayload = String(payload);
   Serial.print("Auto Pin: ");
   Serial.print(pin);
   Serial.print(" : ");
   Serial.print(attributes);
   Serial.println(".");
-  //return strPayload;
   return attributes;
 }
 
@@ -138,34 +122,15 @@ void set_Auto_status(int pin, boolean enabled) {
 }
 
 String get_Lin_Value(int pin, String methodName) {
-  //StaticJsonBuffer<200> jsonBuffer;
-  //JsonObject& data = jsonBuffer.createObject();
-  
-  String data =String(Lin[pin]);
-  String payload = "{";
-      //payload += "\"method\":\"";
-      //payload += methodName;
-      //payload += "\",";
-      //payload += "\"params\":";
-      payload += "\"value\":\"77.50\"";
-      payload += "}";
-
-      // Send payload
+  String payload = String(Lin[pin]);
+  Serial.print("Estado: ");
   char attributes[200];
   payload.toCharArray( attributes,200);
-  
-  //data = Lin[pin];
-  //char payload[256];
-  //data.printTo(payload, sizeof(payload));
-  //String strPayload = String(payload);
   Serial.print("Lin Pin: ");
   Serial.print(pin);
   Serial.print(" : ");
-  //Serial.println(strPayload);
-  //return strPayload;
   Serial.print(attributes);
   Serial.println(".");
-  //return strPayload;
   return attributes;
 }
 
@@ -375,7 +340,7 @@ void setup() {
   delay(400);
   dht.begin();
     
-  client.setServer(mqtt_server, 1883);
+  client.setServer(mqtt_server, 1884);
   client.setCallback(on_message);
   xTaskCreatePinnedToCore(coreTask, "coreTask", 10000, NULL, 0, NULL, taskCore);
   Serial.println("Hilo Creado...");  
@@ -412,4 +377,3 @@ void loop() {
   send_mqtt(t,h,hic,analog_value);
  }
  
-
